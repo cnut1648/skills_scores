@@ -8,5 +8,7 @@ BATCH_OF_25 = 3
 USAJOBS_TOKEN = "jqKffppjkpApPrlwNpgSpVd4B97XI3f3yOCWemycJEM="
 USAJOBS_EMAIL = "jiashuxu@usc.edu"
 
-# onet datadir: where to put onet data
-ONET_DATA_DIR = "/home/"
+# save pickle file of job postings to this dir
+# should contain no `/` as this is the directory name
+PICKLE_DB_DIR_NAME = "db"
+

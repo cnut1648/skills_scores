@@ -1,3 +1,4 @@
+from pathlib import Path
 from time import time
 
 from functools import partial
@@ -11,10 +12,11 @@ from torcherist.algorithms.skill_extractors import (
         FuzzyMatchSkillExtractor,
         ExactMatchSkillExtractor,
         )
+import torcherist
 
 from typing import List
 
-from config import USAJOBS_TOKEN, USAJOBS_EMAIL
+from config import USAJOBS_TOKEN, USAJOBS_EMAIL, PICKLE_DB_DIR_NAME
 from scraper.fetchUSAJobs import USAJobsFetcher
 from utils import (
         tech_skills_or_having_scores, skills_from_USAJobs,
@@ -46,8 +48,14 @@ def getFetcher(jobs):
             "_".join(job.split(" "))
             for job in jobs
             ]
-    with open(f"db/USAJobs-{'&'.join(jobs_str)}.pkl", "wb") as f:
-        pickle.dump(jobpostings, f)
+    try:
+        save_dir = Path(__file__).parent / PICKLE_DB_DIR_NAME
+        save_dir.mkdir(parents=True, exist_ok=True)
+        with open(save_dir / f"USAJobs-{'&'.join(jobs_str)}.pkl", "wb") as f:
+            pickle.dump(jobpostings, f)
+    except Exception as e:
+        print("error in saving pickle file: ", e)
+        print("ignoring...")
     return jobpostings
 
 
@@ -73,7 +81,9 @@ def updateScores(jobs: List[str],
                     onet = future.result()
                 else:
                     jobpostings = future.result()
-            except Exception:
+            except Exception as e:
+                print(e)
+                # print(e.message)
                 return
 
     if skill_extractor == "exact_match":
@@ -93,7 +103,7 @@ def updateScores(jobs: List[str],
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('onet_corresponding_job_id', type=str, help="onet SOC id for the job you provided")
-    parser.add_argument("jobs", nargs="+", help="list of jobs that you want to fetch job postings and update scores")
+    parser.add_argument("jobs", type=str, nargs="+", help="list of jobs that you want to fetch job postings and update scores")
     parser.add_argument("--extractor", dest="skill_extractor",
             type=str, nargs="?", default="exact_match",
             help="type of skill extractor for extracting skills from jobpostings, either 'exact_match' or 'fuzzy_search'")
@@ -113,5 +123,6 @@ if __name__ == '__main__':
             based_prob=args.based_prob
             )
 
-    df.to_csv(f"{date.today()}-update_scores.csv")
+    if df is not None:
+        df.to_csv(f"{date.today()}-update_scores.csv")
     print("Updating for scores took %.3f seconds" % (time() - start))
