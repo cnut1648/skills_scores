@@ -7,3 +7,6 @@ BATCH_OF_25 = 3
 # USAJobs auth
 USAJOBS_TOKEN = "jqKffppjkpApPrlwNpgSpVd4B97XI3f3yOCWemycJEM="
 USAJOBS_EMAIL = "jiashuxu@usc.edu"
+
+# onet datadir: where to put onet data
+ONET_DATA_DIR = "/home/"

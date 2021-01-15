@@ -2,6 +2,7 @@ from time import time
 
 from functools import partial
 
+from argparse import ArgumentParser
 import pickle
 import concurrent.futures
 
@@ -90,10 +91,26 @@ def updateScores(jobs: List[str],
 
 
 if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('jobs', type=List[str], help="list of jobs that you want to fetch job postings and update scores")
+    parser.add_argument('onet_corresponding_job_id', type=str, help="onet SOC id for the job you provided")
+    parser.add_argument("skill_extractor",
+                        type=str, default="exact_match", required=False,
+                        help="type of skill extractor for extracting skills from jobpostings, either 'exact_match' or 'fuzzy_search'")
+    parser.add_argument("alpha", type=float, help="alpha in add-alpha smoothing, default = 1.0",
+                        required=False, default=1.0)
+    args = parser.parse_args()
+
     start = time()
-    df = updateScores(jobs=['Administrative Services Managers', 'Business Manager'],
-                      onet_corresponding_job_id='11-3012.00',
-                      skill_extractor="exact_match"
+    df = updateScores(jobs = args.jobs,
+                      onet_corresponding_job_id=args.onet_corresponding_job_id,
+                      skill_extractor=args.skill_extractor,
+                      alpha=args.alpha
                       )
+
+    # # # df = updateScores(jobs=['Administrative Services Managers', 'Business Manager'],
+    # # #                   onet_corresponding_job_id='11-3012.00',
+    # # #                   skill_extractor="exact_match"
+    # #                   )
     df.to_csv(f"{date.today()}-update_scores.csv")
     print("Updating for scores took %.3f seconds" % (time() - start))
