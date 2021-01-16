@@ -165,8 +165,10 @@ def skills_from_USAJobs(ontology, usaJobs: dict, skill_extractor, alpha=1):
         lambda row: (row["count"] + alpha) / (df["count"].max() + alpha * num_S), axis=1)
     df["min_divide_smoothed"] = df.apply(
         lambda row: (row["count"] + alpha) / (df["count"].min() + alpha * num_S), axis=1)
+    # df["log"] = df.apply(
+            # lambda row: np.log10(row["count"]) / np.log10(df["count"].max()), axis=1)
     df["log_smoothed"] = df.apply(
-        lambda row: np.log10((row["count"] + alpha) / (df["count"].min() + alpha * num_S)), axis=1)
+            lambda row: np.log10(row["count"] + alpha) / np.log10(df["count"].max() + alpha * num_S) if row["count"] > 0 else 0, axis=1)
     return df
 
 

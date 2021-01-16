@@ -109,7 +109,7 @@ Run `pip install -r requirements.txt` and then you (should be) are done with dow
 
 Then take a look at `config.py` to configure the project settings.
 
-# skills_scores
+# skills scores
 
 to run application
 
@@ -122,3 +122,5 @@ where onet id is `11-3012.00` and the corresponding related jobs are `Administra
 to see all available commands please see `python updateScores.py --help`
 
 Note the first time to run this command onet data would be downloaded to your local machine. By default the download directory is `./dataset`.
+
+This script would generate two files whenever it finish the updating process. 1. it generates the pickle files that contains the job postings; 2. it generates the csv files that contains the scores, updated scores, probabilities etc..

@@ -10,5 +10,5 @@ USAJOBS_EMAIL = "jiashuxu@usc.edu"
 
 # save pickle file of job postings to this dir
 # should contain no `/` as this is the directory name
-PICKLE_DB_DIR_NAME = "db"
+PICKLE_DB_DIR_NAME = "pickle"
 

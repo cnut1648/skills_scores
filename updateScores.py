@@ -66,7 +66,7 @@ def updateScores(jobs: List[str],
         based_prob: str = "smoothed"
         ):
     assert skill_extractor in ["exact_match", "fuzzy_search"]
-    assert based_prob in ["smoothed", "max_divide", "max_divide_smoothed", "min_divide_smoothed"]
+    assert based_prob in ["smoothed", "max_divide", "max_divide_smoothed", "min_divide_smoothed", "log_smoothed"]
 
     with concurrent.futures.ThreadPoolExecutor(10) as executor:
         future2data = {
@@ -111,7 +111,7 @@ if __name__ == '__main__':
             nargs="?", help="alpha in add-alpha smoothing, default = 1.0",
             default=1.0)
     parser.add_argument("--prob", dest="based_prob", nargs="?", default="smoothed",
-            help="use which prob to update the scores, must be 'smoothed' | 'max_divide' | 'max_divide_smoothed' | 'min_divide_smoothed'"
+            help="use which prob to update the scores, must be 'smoothed' | 'max_divide' | 'max_divide_smoothed' | 'min_divide_smoothed' | 'log_smoothed'"
             )
     args = parser.parse_args()
 
@@ -124,5 +124,5 @@ if __name__ == '__main__':
             )
 
     if df is not None:
-        df.to_csv(f"{date.today()}-update_scores.csv")
+        df.to_csv(f"scores-{args.onet_corresponding_job_id}::{date.today()}.csv")
     print("Updating for scores took %.3f seconds" % (time() - start))
