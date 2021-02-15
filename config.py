@@ -5,8 +5,8 @@ LINKEDIN_URL = "https://www.linkedin.com/jobs/search/?currentJobId=2322349544&f_
 BATCH_OF_25 = 3
 
 # USAJobs auth
-USAJOBS_TOKEN = "your usajobs token"
-USAJOBS_EMAIL = "your usajobs register email"
+USAJOBS_TOKEN = "jqKffppjkpApPrlwNpgSpVd4B97XI3f3yOCWemycJEM="
+USAJOBS_EMAIL = "jiashuxu@usc.edu"
 
 # save pickle file of job postings to this dir
 # should contain no `/` as this is the directory name

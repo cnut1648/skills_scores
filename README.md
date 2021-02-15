@@ -8,7 +8,7 @@
 
 -   three most efficient skill extractors:
 
-    1.  Grammer based NP Chunking
+    -  Grammer based NP Chunking
 
         Note this one doesn't align extracted skills to Onet skills
 
@@ -103,7 +103,7 @@ Although NER is able to extract useful and more concrete skills (eg. onet doesn'
 
 # set up
 
-First git clone this repository, it is suggested that you create a virtual env to use this function so that it won't conflict with your other packages.
+First git clone this repository, it is suggested that you create a virtual env to use this function so that it won't conflict with your other packages. Note we use python 3.6.
 
 Run `pip install -r requirements.txt` and then you (should be) are done with downloading packages.
 
@@ -111,7 +111,7 @@ Then take a look at `config.py` to configure the project settings.
 
 # skills scores
 
-to run application
+To run application
 
 ```bash
 python updateScores.py 11-3012.00 "Administrative Services Managers" "Business Manager" --alpha 0.7
@@ -121,6 +121,14 @@ where onet id is `11-3012.00` and the corresponding related jobs are `Administra
 
 to see all available commands please see `python updateScores.py --help`
 
-Note the first time to run this command onet data would be downloaded to your local machine. By default the download directory is `./dataset`.
+Note the first time to run this command onet data would be downloaded to your local machine. 
 
-This script would generate two files whenever it finish the updating process. 1. it generates the pickle files that contains the job postings; 2. it generates the csv files that contains the scores, updated scores, probabilities etc..
+This script would generate two files whenever it finishs the updating process. 1. it generates the pickle files that contains the job postings; 2. it generates the csv files that contains the scores, updated scores, probabilities etc..
+
+Or, if you prefer using list of job names, use
+
+```bash
+python main.py "Business Administrator" "Administrative Officer" "Administrative Services Managers" "Mathematicians" "Statisticians" --alpha 0.7 
+```
+
+`main.py` would use Onet API to find the corresponding id, and output the confidence levels. Please note that it would only choose the most confident id.
