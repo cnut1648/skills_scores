@@ -37,25 +37,25 @@ def getOnet(onet_corresponding_job_id):
 
 
 def getFetcher(jobs):
-    fetcher = USAJobsFetcher(USAJOBS_TOKEN, USAJOBS_EMAIL)
-    try:
-        jobpostings: dict = fetcher.all_postings_of(jobs)
-    except Exception as e:
-        print("Your token or email is wrong. Please double check again.")
-        raise e
-    jobs_str = [
-        "_".join(job.split(" "))
-        for job in jobs
-    ]
-    try:
-        save_dir = Path(__file__).parent / PICKLE_DB_DIR_NAME
-        save_dir.mkdir(parents=True, exist_ok=True)
-        with open(save_dir / f"USAJobs-{'&'.join(jobs_str)}.pkl", "wb") as f:
-            pickle.dump(jobpostings, f)
-    except Exception as e:
-        print("error in saving pickle file: ", e)
-        print("ignoring...")
-    return jobpostings
+    with USAJobsFetcher(USAJOBS_TOKEN, USAJOBS_EMAIL) as fetcher:
+        try:
+            jobpostings: dict = fetcher.all_postings_of(jobs)
+        except Exception as e:
+            print("Your token or email is wrong. Please double check again.")
+            raise e
+        jobs_str = [
+            "_".join(job.split(" "))
+            for job in jobs
+        ]
+        try:
+            save_dir = Path(__file__).parent / PICKLE_DB_DIR_NAME
+            save_dir.mkdir(parents=True, exist_ok=True)
+            with open(save_dir / f"USAJobs-{'&'.join(jobs_str)}.pkl", "wb") as f:
+                pickle.dump(jobpostings, f)
+        except Exception as e:
+            print("error in saving pickle file: ", e)
+            print("ignoring...")
+        return jobpostings
 
 
 def updateScores(jobs: List[str],

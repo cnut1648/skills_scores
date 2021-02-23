@@ -14,8 +14,13 @@ class USAJobsFetcher(object):
         self.session = session
         self.result_per_page = result_per_page
 
+    def __enter__(self):
         if not self.session:
             self.session = self._default_session()
+            return self
+
+    def __exit__(self, *unused):
+        self.session.close()
 
     @property
     def headers(self):
@@ -39,7 +44,8 @@ class USAJobsFetcher(object):
         response = self.session.get(
             self.base_url,
             params=params,
-            headers=self.headers
+            headers=self.headers,
+            timeout=5
         )
         return response.json()
 
@@ -84,7 +90,6 @@ class USAJobsFetcher(object):
             job: self._job_postings(job)
             for job in jobs
         }
-
 
 
 
