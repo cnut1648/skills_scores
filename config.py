@@ -12,3 +12,6 @@ USAJOBS_EMAIL = "jiashuxu@usc.edu"
 # should contain no `/` as this is the directory name
 PICKLE_DB_DIR_NAME = "pickle"
 
+# for download and load Onet data
+ONET_DIR = "./dataset/onet"
+

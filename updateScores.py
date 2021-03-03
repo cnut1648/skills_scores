@@ -15,7 +15,7 @@ from torcherist.algorithms.skill_extractors import (
 
 from typing import List
 
-from config import USAJOBS_TOKEN, USAJOBS_EMAIL, PICKLE_DB_DIR_NAME
+from config import USAJOBS_TOKEN, USAJOBS_EMAIL, PICKLE_DB_DIR_NAME, ONET_DIR
 from scraper.fetchUSAJobs import USAJobsFetcher
 from utils import (
     tech_skills_or_having_scores, skills_from_USAJobs,
@@ -26,7 +26,7 @@ from datetime import date
 
 
 def getOnet(onet_corresponding_job_id):
-    onet = Onet()
+    onet = Onet(onet_dir=Path(ONET_DIR))
     onet = onet.filter_by(lambda e: e.occupation.identifier == onet_corresponding_job_id)
     onet = onet.filter_by(tech_skills_or_having_scores)
     onet.name = onet_corresponding_job_id
